@@ -9,13 +9,13 @@ app = Flask(__name__)
 def index(tisp=''):
     data = {}
 
-    if 'flies' not in os.listdir(os.getcwd()):
-        os.mkdir(os.getcwd() + '/flies/')
+    if 'files' not in os.listdir(os.getcwd()):
+        os.mkdir(os.getcwd() + '/files/')
 
     data['path'] = os.getcwd()+'/files'
     if request.method == 'POST':
         f = request.files['file']
-        upload_path = os.getcwd()+'/flies/'+secure_filename(f.filename)  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+        upload_path = os.getcwd()+'/files/'+secure_filename(f.filename)  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
         f.save(upload_path)
         data['tisp'] = '<'+secure_filename(f.filename)+'>上传成功'
         return redirect(url_for('index',tisp=data['tisp']))
