@@ -16,8 +16,11 @@ def index(tisp=''):
     if request.method == 'POST':
         f = request.files['file']
         upload_path = os.getcwd()+'/files/'+secure_filename(f.filename)  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
-        f.save(upload_path)
-        data['tisp'] = '<'+secure_filename(f.filename)+'>上传成功'
+        if secure_filename(f.filename) not in os.listdir(os.getcwd()+'/files'):
+            f.save(upload_path)
+            data['tisp'] = '<'+secure_filename(f.filename)+'>上传成功'
+        else:
+            data['tisp'] = '<'+secure_filename(f.filename)+'>已经存在，请重新命名！'
         return redirect(url_for('index',tisp=data['tisp']))
     else:
         data['tisp'] = request.args.get('tisp')
